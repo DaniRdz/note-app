@@ -4,15 +4,9 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-const notes = [
-  { id: 1, content: "Hello my friends", date: "14/06/2021", important: true },
-  { id: 2, content: "Hello from react", date: "14/06/2021", important: true },
-  { id: 3, content: "Todo this", date: "14/06/2021", important: false },
-];
-
 ReactDOM.render(
   <React.StrictMode>
-    <App notes={notes} />
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );

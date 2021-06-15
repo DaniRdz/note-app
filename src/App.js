@@ -1,12 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Note } from "./components/Note";
+
+import { createNewNote, getAllNotes } from "./services/notes";
+
 import "./App.css";
 
-function App(props) {
-  const [notes, setNotes] = useState(props.notes);
+function App() {
+  const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState("");
   const [showAll, setShowAll] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    getAllNotes().then((notes) => {
+      setNotes(notes);
+      setIsLoading(false);
+    });
+  }, []);
 
   const handleChange = (e) => {
     setNewNote(e.target.value);
@@ -15,13 +26,13 @@ function App(props) {
     e.preventDefault();
 
     const newNoteToAdd = {
-      id: notes.length + 1,
       content: newNote,
-      date: new Date().toISOString(),
       important: false,
     };
+    createNewNote(newNoteToAdd).then((newNote) => {
+      setNotes((prevNotes) => prevNotes.concat(newNote));
+    });
 
-    setNotes(notes.concat(newNoteToAdd));
     setNewNote("");
   };
   const handleShow = () => {
@@ -33,16 +44,20 @@ function App(props) {
       <button onClick={handleShow}>
         {showAll ? "Show Importants" : "Show All"}
       </button>
-      <ul>
-        {notes
-          .filter((note) => {
-            if (showAll === true) return true;
-            return note.important === true;
-          })
-          .map((note) => (
-            <Note key={note.id} {...note} />
-          ))}
-      </ul>
+      {isLoading ? (
+        <div>Loading....</div>
+      ) : (
+        <ul>
+          {notes
+            .filter((note) => {
+              if (showAll === true) return true;
+              return note.important === true;
+            })
+            .map((note) => (
+              <Note key={note.id} {...note} />
+            ))}
+        </ul>
+      )}
       <form onSubmit={handleSubmit}>
         <input onChange={handleChange} value={newNote} />
         <button>Crate Note</button>
