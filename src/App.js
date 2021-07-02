@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { Note } from "./components/Note";
+import { LoginForm } from "./components/LoginForm";
 
 import { createNewNote, getAllNotes } from "./services/notes";
 
@@ -11,6 +12,8 @@ function App() {
   const [newNote, setNewNote] = useState("");
   const [showAll, setShowAll] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     getAllNotes().then((notes) => {
@@ -29,7 +32,9 @@ function App() {
       content: newNote,
       important: false,
     };
-    createNewNote(newNoteToAdd).then((newNote) => {
+
+    const { token } = user;
+    createNewNote(newNoteToAdd, { token }).then((newNote) => {
       setNotes((prevNotes) => prevNotes.concat(newNote));
     });
 
@@ -38,9 +43,27 @@ function App() {
   const handleShow = () => {
     setShowAll(() => !showAll);
   };
+
   return (
     <div className="App">
       <h1>Notes</h1>
+      <h2>{errorMessage}</h2>
+      {!user ? (
+        <LoginForm
+          handleChangeErrorMessage={setErrorMessage}
+          handleChangeUser={setUser}
+        />
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <input
+            placeholder="Create a new note.."
+            onChange={handleChange}
+            value={newNote}
+          />
+          <button>Create Note</button>
+        </form>
+      )}
+
       <button onClick={handleShow}>
         {showAll ? "Show Importants" : "Show All"}
       </button>
@@ -58,10 +81,6 @@ function App() {
             ))}
         </ul>
       )}
-      <form onSubmit={handleSubmit}>
-        <input onChange={handleChange} value={newNote} />
-        <button>Crate Note</button>
-      </form>
     </div>
   );
 }

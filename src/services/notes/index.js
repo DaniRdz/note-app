@@ -9,8 +9,13 @@ export const getAllNotes = () => {
   });
 };
 
-export const createNewNote = ({ content }) => {
-  return axios.post(_URL, { content }).then((response) => {
+export const createNewNote = ({ content }, { token }) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  return axios.post(_URL, { content }, config).then((response) => {
     const { data } = response;
     return data;
   });
