@@ -22,6 +22,20 @@ function App() {
     });
   }, []);
 
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem("loggedNoteAppUser");
+
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON);
+      setUser(user);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    setUser(null);
+    window.localStorage.removeItem("loggedNoteAppUser");
+  };
+
   const handleChange = (e) => {
     setNewNote(e.target.value);
   };
@@ -54,14 +68,19 @@ function App() {
           handleChangeUser={setUser}
         />
       ) : (
-        <form onSubmit={handleSubmit}>
-          <input
-            placeholder="Create a new note.."
-            onChange={handleChange}
-            value={newNote}
-          />
-          <button>Create Note</button>
-        </form>
+        <>
+          <form onSubmit={handleSubmit}>
+            <input
+              placeholder="Create a new note.."
+              onChange={handleChange}
+              value={newNote}
+            />
+            <button>Create Note</button>
+          </form>
+          <div>
+            <button onClick={handleLogout}>Logout</button>
+          </div>
+        </>
       )}
 
       <button onClick={handleShow}>

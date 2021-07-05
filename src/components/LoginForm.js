@@ -10,9 +10,10 @@ export const LoginForm = ({ handleChangeErrorMessage, handleChangeUser }) => {
     e.preventDefault();
     login({ username, password })
       .then((user) => {
-        handleChangeUser(user);
         setUsername("");
         setPassword("");
+        window.localStorage.setItem("loggedNoteAppUser", JSON.stringify(user));
+        handleChangeUser(user);
       })
       .catch((e) => {
         handleChangeErrorMessage("Wrong credentials");
