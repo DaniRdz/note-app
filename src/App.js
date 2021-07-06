@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import { Note } from "./components/Note";
 import { LoginForm } from "./components/LoginForm";
+import { NoteForm } from "./components/NoteForm";
 
 import { createNewNote, getAllNotes } from "./services/notes";
 
@@ -9,7 +10,6 @@ import "./App.css";
 
 function App() {
   const [notes, setNotes] = useState([]);
-  const [newNote, setNewNote] = useState("");
   const [showAll, setShowAll] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
@@ -36,23 +36,11 @@ function App() {
     window.localStorage.removeItem("loggedNoteAppUser");
   };
 
-  const handleChange = (e) => {
-    setNewNote(e.target.value);
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const newNoteToAdd = {
-      content: newNote,
-      important: false,
-    };
-
+  const addNewNote = (newNoteToAdd) => {
     const { token } = user;
     createNewNote(newNoteToAdd, { token }).then((newNote) => {
       setNotes((prevNotes) => prevNotes.concat(newNote));
     });
-
-    setNewNote("");
   };
   const handleShow = () => {
     setShowAll(() => !showAll);
@@ -69,14 +57,7 @@ function App() {
         />
       ) : (
         <>
-          <form onSubmit={handleSubmit}>
-            <input
-              placeholder="Create a new note.."
-              onChange={handleChange}
-              value={newNote}
-            />
-            <button>Create Note</button>
-          </form>
+          <NoteForm addNewNote={addNewNote} />
           <div>
             <button onClick={handleLogout}>Logout</button>
           </div>

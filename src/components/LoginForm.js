@@ -2,6 +2,8 @@ import { useState } from "react";
 
 import { login } from "../services/login";
 
+import { Togglable } from "./Togglable";
+
 export const LoginForm = ({ handleChangeErrorMessage, handleChangeUser }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -23,26 +25,28 @@ export const LoginForm = ({ handleChangeErrorMessage, handleChangeUser }) => {
       });
   };
   return (
-    <form onSubmit={handleLoginSubmit}>
-      <div>
-        <input
-          type="text"
-          onChange={(e) => setUsername(e.target.value)}
-          name="username"
-          placeholder="Username"
-          value={username}
-        />
-      </div>
-      <div>
-        <input
-          type="password"
-          onChange={(e) => setPassword(e.target.value)}
-          name="password"
-          placeholder="Password"
-          value={password}
-        />
-      </div>
-      <button>Login</button>
-    </form>
+    <Togglable buttonLabel="Show Login">
+      <form onSubmit={handleLoginSubmit}>
+        <div>
+          <input
+            type="text"
+            onChange={(e) => setUsername(e.target.value)}
+            name="username"
+            placeholder="Username"
+            value={username}
+          />
+        </div>
+        <div>
+          <input
+            type="password"
+            onChange={(e) => setPassword(e.target.value)}
+            name="password"
+            placeholder="Password"
+            value={password}
+          />
+        </div>
+        <button>Login</button>
+      </form>
+    </Togglable>
   );
 };
