@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Togglable } from "./Togglable";
 
 export const NoteForm = ({ addNewNote }) => {
   const [newNote, setNewNote] = useState("");
+  const togglableRef = useRef();
 
   const handleChange = (e) => {
     setNewNote(e.target.value);
@@ -18,10 +19,11 @@ export const NoteForm = ({ addNewNote }) => {
 
     addNewNote(newNoteToAdd);
     setNewNote("");
+    togglableRef.current.togglableVisibility();
   };
 
   return (
-    <Togglable buttonLabel="Create Notes">
+    <Togglable buttonLabel="Create Notes" ref={togglableRef}>
       <form onSubmit={handleSubmit}>
         <input
           placeholder="Create a new note.."
