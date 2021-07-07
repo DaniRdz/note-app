@@ -1,10 +1,11 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 
 import { login } from "../services/login";
 
 import { Togglable } from "./Togglable";
 
-export const LoginForm = ({ handleChangeErrorMessage, handleChangeUser }) => {
+const LoginForm = ({ handleChangeErrorMessage, handleChangeUser }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -50,3 +51,9 @@ export const LoginForm = ({ handleChangeErrorMessage, handleChangeUser }) => {
     </Togglable>
   );
 };
+LoginForm.propTypes = {
+  handleChangeUser: PropTypes.func.isRequired,
+  handleChangeErrorMessage: PropTypes.func.isRequired,
+};
+
+export { LoginForm };

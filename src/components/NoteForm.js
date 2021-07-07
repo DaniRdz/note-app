@@ -1,7 +1,9 @@
 import { useState, useRef } from "react";
+import PropTypes from "prop-types";
+
 import { Togglable } from "./Togglable";
 
-export const NoteForm = ({ addNewNote }) => {
+const NoteForm = ({ addNewNote }) => {
   const [newNote, setNewNote] = useState("");
   const togglableRef = useRef();
 
@@ -35,3 +37,8 @@ export const NoteForm = ({ addNewNote }) => {
     </Togglable>
   );
 };
+NoteForm.propTypes = {
+  addNewNote: PropTypes.func,
+};
+
+export { NoteForm };
