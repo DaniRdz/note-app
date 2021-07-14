@@ -46,7 +46,7 @@ const LoginForm = ({ handleChangeErrorMessage, handleChangeUser }) => {
             value={password}
           />
         </div>
-        <button>Login</button>
+        <button id="form-login-btn">Login</button>
       </form>
     </Togglable>
   );

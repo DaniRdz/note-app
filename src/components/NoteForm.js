@@ -32,7 +32,7 @@ const NoteForm = ({ addNewNote }) => {
           onChange={handleChange}
           value={newNote}
         />
-        <button>Create Note</button>
+        <button id="form-create-note-btn">Create Note</button>
       </form>
     </Togglable>
   );
